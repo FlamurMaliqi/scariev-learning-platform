@@ -8,14 +8,11 @@ Die Phasen beschreiben Umfang und Abhängigkeiten. Zeitliche Schätzungen sollte
 
 ## Phase 0: Analyse und Risikoreduzierung
 
-- Moodle-Versionen, Fragetypen, Plugins, Nutzer, Zugangszeiträume und Fortschrittsdaten erfassen.
-- Einen repräsentativen Export beschaffen, der die komplexesten Formeln, Bilder und Bewertungsregeln enthält.
-- Einen gezielten Prototyp für Parsing und Darstellung erstellen und die Ergebnisse mit Moodle vergleichen.
 - Rahmenbedingungen für Cloud, Identität, Bezahlung, Datenschutz, Verfügbarkeit und Aufbewahrung bestätigen.
-- Die erwartete maximale Anzahl gleichzeitiger Nutzer und die Ziele für Lasttests abstimmen.
+- Das Lasttestziel auf Grundlage von bis zu 2.000 gleichzeitig aktiven Lernenden und einer zusätzlichen Sicherheitsreserve festlegen.
 - Architekturentscheidung und MVP-Abnahmekriterien finalisieren.
 
-Abschlusskriterium: Unterstützte und nicht unterstützte Migrationsfälle sind bekannt, und keine ungeklärte Rahmenbedingung stellt die Zielarchitektur infrage.
+Abschlusskriterium: Die verbleibenden Rahmenbedingungen und MVP-Abnahmekriterien sind bestätigt, und keine ungeklärte Vorgabe stellt die Zielarchitektur infrage.
 
 ## Phase 1: Plattformgrundlage
 

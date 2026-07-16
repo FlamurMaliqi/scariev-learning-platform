@@ -12,9 +12,12 @@ Die mobile Lernplattform und das geschützte Admin-Portal werden als eine modula
 
 - Die bestehende Moodle-Plattform wird vollständig ersetzt.
 - Die anfängliche Nutzerzahl liegt bei etwa 2.000–3.000 und steigt perspektivisch auf bis zu 10.000.
-- Prüfungszeiträume können kurze, vorhersehbare Lastspitzen verursachen.
+- Prüfungszeiträume können kurze, vorhersehbare Lastspitzen mit bis zu 2.000 gleichzeitig aktiven Lernenden verursachen.
 - Bestehende Fragen liegen größtenteils maschinenlesbar vor; Formeln und Bilder müssen erhalten bleiben.
-- Der Zugang ist zeitlich begrenzt und wird über Printcodes, Online-Käufe oder die Administration vergeben.
+- Aus Moodle werden ausschließlich Inhalte migriert; Nutzer, Zugangszeiträume und Lernfortschritte werden nicht übernommen.
+- Der Zugang ist zeitlich begrenzt. Bei Online-Käufen beginnt er nach bestätigter Zahlung, bei Printprodukten mit der Codeeinlösung.
+- Während der Zugangslaufzeit erhalten Nutzer stets die aktuell veröffentlichten Inhalte und keine feste Prüfungsedition.
+- Der Betrieb erfolgt bei AWS in einer EU-Region.
 - Die erste Nutzeroberfläche ist eine responsive Webanwendung, keine native mobile App.
 - Das Admin-Portal ist Teil des initialen Produktumfangs.
 
@@ -142,8 +145,6 @@ Importregeln:
 7. Änderungen erzeugen Entwurfsrevisionen und erfordern vor der Veröffentlichung eine administrative Prüfung.
 8. Eine fehlende Frage wird nur dann als Löschung interpretiert, wenn der Import ausdrücklich einen vollständigen Datenstand darstellt.
 
-Der erste technische Spike muss einen repräsentativen Export, sämtliche Moodle-Fragetypen und -Plugins, komplexe Formeln, Bilder, Teilbewertungen, numerische Toleranzen sowie Cloze- oder berechnete Fragen testen.
-
 ## Umfang des Admin-Portals
 
 Das Admin-Portal ist Teil der initialen Auslieferung und keine spätere Ergänzung.
@@ -201,14 +202,10 @@ Redis, Kafka, Elasticsearch, Datenbankpartitionierung, Lesereplikate und Kuberne
 
 ## Offene Entscheidungen
 
-1. Vorgaben für Cloud und EU-Datenresidenz.
-2. Ob Nutzer, verbleibende Zugangszeiträume und Fortschritte aus Moodle migriert werden.
-3. Tatsächliches Moodle-Exportformat, Fragetypen, Plugins und Quellkennungen.
-4. Regeln für Zugangsbeginn, Verlängerung, Erstattung und Kulanzzeiträume.
-5. Feste Editionen gegenüber kontinuierlich aktualisierten Produktinhalten.
-6. Zahlungsanbieter und Verhalten beim Gastkauf.
-7. Zielwert für gleichzeitige Nutzer sowie Anforderungen an Verfügbarkeit, Wiederherstellungszeit und Wiederherstellungspunkt.
-8. Aufbewahrung von Fortschritt und Antwortversuchen nach Ablauf des Zugangs.
+1. Regeln für Verlängerung, Erstattung und Kulanzzeiträume.
+2. Zahlungsanbieter und Verhalten beim Gastkauf.
+3. Anforderungen an Verfügbarkeit, Wiederherstellungszeit und Wiederherstellungspunkt.
+4. Aufbewahrung von Fortschritt und Antwortversuchen nach Ablauf des Zugangs.
 
 ## Referenzen
 

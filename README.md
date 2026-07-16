@@ -35,7 +35,7 @@ Siehe [Zielarchitektur](docs/architecture.md), [Umsetzungsplan](docs/implementat
 
 ## Geplante Anwendungsstruktur
 
-Die Anwendungsverzeichnisse werden ergänzt, sobald die technische Voruntersuchung das Moodle-Format, die Betriebsvorgaben und die Framework-Auswahl bestätigt hat.
+Die Anwendungsverzeichnisse werden ergänzt, sobald Betriebsvorgaben und Framework-Auswahl bestätigt sind.
 
 ```text
 apps/
@@ -47,11 +47,10 @@ infrastructure/         Bereitstellung und Infrastruktur als Code
 docs/                   Architektur, Entscheidungen und Umsetzungsplan
 ```
 
-## Noch ausstehende Entscheidungen
+## Bestätigte Rahmenbedingungen
 
-1. Ob AWS in einer EU-Region akzeptabel ist.
-2. Ob die Migration neben Inhalten auch Moodle-Nutzer, Zugangszeiträume und Lernfortschritte umfasst.
-3. Ein repräsentativer Moodle-Export sowie eine Übersicht der Fragetypen und Plugins.
-4. Ob der Produktzugang mit dem Kauf, der Codeeinlösung oder der ersten Nutzung beginnt.
-5. Ob Produkte eine feste Prüfungsedition oder stets die aktuellen Inhalte freischalten.
-6. Die erwartete maximale Anzahl gleichzeitig aktiver Lernender.
+1. Der Betrieb erfolgt bei AWS in einer EU-Region.
+2. Aus Moodle werden ausschließlich Inhalte migriert; Nutzer, Zugangszeiträume und Lernfortschritte werden nicht übernommen.
+3. Bei Online-Käufen beginnt der Zugang nach bestätigter Zahlung; bei Printprodukten beginnt er mit der Codeeinlösung.
+4. Während der Zugangslaufzeit erhalten Nutzer stets die aktuell veröffentlichten Inhalte und keine feste Prüfungsedition.
+5. Die Architektur wird auf eine Prüfungsspitze von bis zu 2.000 gleichzeitig aktiven Lernenden ausgelegt.
