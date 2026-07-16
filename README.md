@@ -4,9 +4,11 @@ Arbeitsbereich für Architektur und Umsetzung zur Ablösung der bestehenden Mood
 
 ## Aktueller Stand
 
-Das Projekt befindet sich in der Architekturkonzeption. Eine produktionsfähige Anwendung wurde noch nicht aufgesetzt. Das erste Ergebnis ist ein kompakter Architekturvorschlag mit 1–3 Folien sowie ein erster Umsetzungsplan.
+Das Projekt befindet sich in der Architekturkonzeption. Eine produktionsfähige Anwendung wurde noch nicht aufgesetzt. Das erste Ergebnis ist ein kompakter Architekturvorschlag mit drei Folien sowie ein erster Umsetzungsplan.
 
 ## Erstes Ergebnis
+
+Die Präsentation steht unter [Zielarchitektur und Umsetzungsplan](praesentationen/scariev-zielarchitektur-und-umsetzungsplan.pptx) bereit.
 
 Der Vorschlag umfasst:
 
@@ -51,6 +53,6 @@ docs/                   Architektur, Entscheidungen und Umsetzungsplan
 
 1. Der Betrieb erfolgt bei AWS in einer EU-Region.
 2. Aus Moodle werden ausschließlich Inhalte migriert; Nutzer, Zugangszeiträume und Lernfortschritte werden nicht übernommen.
-3. Bei Online-Käufen beginnt der Zugang nach bestätigter Zahlung; bei Printprodukten beginnt er mit der Codeeinlösung.
-4. Während der Zugangslaufzeit erhalten Nutzer stets die aktuell veröffentlichten Inhalte und keine feste Prüfungsedition.
+3. Bei Online-Käufen beginnt der Zugang nach bestätigter Zahlung; Printcodes erzeugen bei ihrer Einlösung eine Zugangsfreigabe.
+4. Jeder Kauf beziehungsweise Printcode schaltet eine feste Prüfungsedition frei. Neue Editionen werden nicht automatisch freigeschaltet; Korrekturen innerhalb der erworbenen Edition bleiben möglich.
 5. Die Architektur wird auf eine Prüfungsspitze von bis zu 2.000 gleichzeitig aktiven Lernenden ausgelegt.

@@ -15,8 +15,8 @@ Die mobile Lernplattform und das geschützte Admin-Portal werden als eine modula
 - Prüfungszeiträume können kurze, vorhersehbare Lastspitzen mit bis zu 2.000 gleichzeitig aktiven Lernenden verursachen.
 - Bestehende Fragen liegen größtenteils maschinenlesbar vor; Formeln und Bilder müssen erhalten bleiben.
 - Aus Moodle werden ausschließlich Inhalte migriert; Nutzer, Zugangszeiträume und Lernfortschritte werden nicht übernommen.
-- Der Zugang ist zeitlich begrenzt. Bei Online-Käufen beginnt er nach bestätigter Zahlung, bei Printprodukten mit der Codeeinlösung.
-- Während der Zugangslaufzeit erhalten Nutzer stets die aktuell veröffentlichten Inhalte und keine feste Prüfungsedition.
+- Der Zugang ist zeitlich begrenzt. Bei Online-Käufen beginnt er nach bestätigter Zahlung; Printcodes erzeugen bei ihrer Einlösung eine Zugangsfreigabe.
+- Jeder Kauf beziehungsweise Printcode schaltet eine feste Prüfungsedition frei. Neue Editionen werden nicht automatisch freigeschaltet; Korrekturen innerhalb der erworbenen Edition bleiben möglich.
 - Der Betrieb erfolgt bei AWS in einer EU-Region.
 - Die erste Nutzeroberfläche ist eine responsive Webanwendung, keine native mobile App.
 - Das Admin-Portal ist Teil des initialen Produktumfangs.
@@ -80,9 +80,13 @@ erDiagram
     OFFER }o--|| ACCESS_SCOPE : schaltet_frei
     ACCESS_SCOPE ||--o{ ACCESS_GRANT : gewaehrt
     REDEMPTION_CODE ||--o| ACCESS_GRANT : wird_eingeloest_zu
-    ACCESS_SCOPE ||--o{ CONTENT_NODE : enthaelt
-    CONTENT_NODE }o--o{ QUESTION : organisiert
+    ACCESS_SCOPE }o--o| EXAM_EDITION : bindet_optional
+    EXAM_EDITION ||--o{ CONTENT_NODE : strukturiert
+    EXAM_EDITION ||--o{ EDITION_QUESTION : enthaelt
+    CONTENT_NODE ||--o{ EDITION_QUESTION : ordnet
+    QUESTION ||--o{ EDITION_QUESTION : erscheint_in
     QUESTION ||--o{ QUESTION_REVISION : versioniert
+    QUESTION_REVISION ||--o{ EDITION_QUESTION : veroeffentlicht_als
     QUESTION_REVISION }o--o{ MEDIA_ASSET : referenziert
     USER ||--o{ LEARNING_SESSION : startet
     LEARNING_SESSION ||--o{ QUESTION_DELIVERY : liefert_aus
@@ -97,21 +101,25 @@ erDiagram
 - `user`: stabile interne UUID und Kontostatus.
 - `user_identity`: eindeutige Kombination aus OIDC-`issuer + subject`; die E-Mail-Adresse ist kein fachlicher Schlüssel.
 - `offer`: kommerzielles Produkt oder Printprodukt.
-- `access_scope`: freigeschalteter Inhalt oder freigeschaltete Funktion, beispielsweise `exam-2027` oder `feature:ai-tutor`.
+- `access_scope`: freigeschaltete Prüfungsedition oder Funktion, beispielsweise `exam-2027` oder `feature:ai-tutor`.
 - `access_grant`: `valid_from`, `valid_until`, `revoked_at`, Quelle und Nutzer.
 - `redemption_code`: einmalig verwendbarer Code, der als kryptografischer Prüfwert mit geheimem Schlüssel gespeichert und in kontrollierten Druckchargen gruppiert wird.
+- `exam_edition`: feste, kommerziell freischaltbare Prüfungsedition mit eigenem Veröffentlichungsstatus.
 
 Bei jeder geschützten Anfrage prüft der Server eine aktive Zugangsfreigabe. Codeeinlösung und Verarbeitung von Zahlungs-Webhooks erfolgen atomar und idempotent.
 
 ### Inhalte
 
-- `question`: stabile Identität und Verweis auf die aktuell veröffentlichte Revision.
+- `question`: stabile fachliche Identität einer Frage, unabhängig von Edition und Bearbeitungsstand.
 - `question_revision`: unveränderlicher Fragetyp, Darstellungsdaten, ausschließlich serverseitige Lösungsdaten, Metadaten und Inhaltsprüfsumme.
+- `edition_question`: ordnet einer festen Prüfungsedition eine veröffentlichte Fragenrevision, ihre Position und ihren Themenknoten zu.
 - `media_asset`: validierte Objektspeicherreferenz mit MIME-Typ, Größe und Prüfsumme.
 - `content_node`: Kurs, Kapitel, Thema oder eine andere kleine Hierarchieebene.
 - `question_source`: stabile Zuordnung von Moodle-Quellkennungen zu Plattformfragen.
 
-Darstellungs- und Bewertungsdaten sind getrennt, damit korrekte Antworten niemals zusammen mit den regulären Lernerdaten zurückgegeben werden. Historische Antwortversuche verweisen stets auf die tatsächlich angezeigte Revision.
+Neue Editionen erhalten eigene Zuordnungen und werden bestehenden Käufen nicht automatisch hinzugefügt. Eine fachliche Korrektur innerhalb einer erworbenen Edition erzeugt eine neue Revision und aktualisiert nur deren Editionszuordnung; historische Antwortversuche verweisen weiterhin auf die tatsächlich angezeigte Revision.
+
+Darstellungs- und Bewertungsdaten sind getrennt, damit korrekte Antworten niemals zusammen mit den regulären Lernerdaten zurückgegeben werden.
 
 ### Lernen
 
@@ -153,10 +161,11 @@ Das Admin-Portal ist Teil der initialen Auslieferung und keine spätere Ergänzu
 - Zugänge prüfen, gewähren, verlängern und widerrufen.
 - Printcode-Chargen erstellen und überwachen, ohne gespeicherte Klartextcodes offenzulegen.
 - Fragen bearbeiten und unveränderliche Revisionen erstellen.
+- Feste Prüfungseditionen zusammenstellen sowie Korrekturen innerhalb einer Edition gezielt veröffentlichen.
 - Moodle-Importdiagnosen und Vorher-/Nachher-Vorschauen prüfen.
 - Inhalte über einen expliziten Ablauf veröffentlichen oder archivieren.
 - Abgegrenzte Rollen wie Inhaltsredaktion, Veröffentlichung, Kundenbetreuung und Nutzeradministration verwalten.
-- Ein nur erweiterbares Prüfprotokoll für sensible Aktionen einsehen.
+- Ein nur erweiterbares Änderungsprotokoll für sensible Aktionen einsehen.
 - Importjobs, Plattformzustand und supportgeeignete Betriebsdiagnosen einsehen.
 
 Der Admin-Zugang verwendet eine separate OAuth-Anwendung, verpflichtende MFA, serverseitig durchgesetzte Autorisierung und erneute Authentifizierung für kritische Aktionen. Die Oberfläche kann dieselbe Plattformbereitstellung nutzen, bleibt jedoch eine eigenständige Sicherheitsoberfläche.
