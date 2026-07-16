@@ -8,7 +8,7 @@ Das Projekt befindet sich in der Architekturkonzeption. Eine produktionsfähige 
 
 ## Erstes Ergebnis
 
-Die Präsentation steht als [High-Level-Zielarchitektur und Umsetzungsplan](praesentationen/scariev-zielarchitektur-high-level.pptx) bereit.
+Die Präsentation steht als [fachlich-technische Zielarchitektur und Umsetzungsplan](praesentationen/scariev-zielarchitektur.pptx) bereit.
 
 Der Vorschlag umfasst:
 
