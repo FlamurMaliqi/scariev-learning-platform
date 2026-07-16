@@ -1,74 +1,74 @@
-# Initial Implementation Plan
+# Erster Umsetzungsplan
 
-Status: Draft
+Status: Entwurf
 
-Last updated: 2026-07-16
+Zuletzt aktualisiert: 2026-07-16
 
-The phases describe scope and dependencies. Calendar estimates should be added only after team size, content complexity, external integrations, and migration scope are known.
+Die Phasen beschreiben Umfang und Abhängigkeiten. Zeitliche Schätzungen sollten erst ergänzt werden, wenn Teamgröße, Komplexität der Inhalte, externe Integrationen und Migrationsumfang bekannt sind.
 
-## Phase 0: Discovery and risk reduction
+## Phase 0: Analyse und Risikoreduzierung
 
-- Inventory Moodle versions, question types, plugins, users, access periods, and progress data.
-- Obtain a representative export containing the most complex formulas, images, and grading rules.
-- Build a narrow parser/rendering spike and compare results with Moodle.
-- Confirm cloud, identity, payment, privacy, availability, and retention constraints.
-- Agree peak concurrency and load-test targets.
-- Finalize the architecture decision and MVP acceptance criteria.
+- Moodle-Versionen, Fragetypen, Plugins, Nutzer, Zugangszeiträume und Fortschrittsdaten erfassen.
+- Einen repräsentativen Export beschaffen, der die komplexesten Formeln, Bilder und Bewertungsregeln enthält.
+- Einen gezielten Prototyp für Parsing und Darstellung erstellen und die Ergebnisse mit Moodle vergleichen.
+- Rahmenbedingungen für Cloud, Identität, Bezahlung, Datenschutz, Verfügbarkeit und Aufbewahrung bestätigen.
+- Die erwartete maximale Anzahl gleichzeitiger Nutzer und die Ziele für Lasttests abstimmen.
+- Architekturentscheidung und MVP-Abnahmekriterien finalisieren.
 
-Exit criterion: supported and unsupported migration cases are known, and no unresolved constraint invalidates the target architecture.
+Abschlusskriterium: Unterstützte und nicht unterstützte Migrationsfälle sind bekannt, und keine ungeklärte Rahmenbedingung stellt die Zielarchitektur infrage.
 
-## Phase 1: Platform foundation
+## Phase 1: Plattformgrundlage
 
-- Establish repository tooling, continuous integration, environments, and infrastructure as code.
-- Deploy a minimal platform with health checks, structured logging, metrics, and secrets management.
-- Integrate managed OIDC authentication and create internal UUID users.
-- Implement access scopes and grants.
-- Add the first admin security boundary, roles, MFA policy, and audit events.
+- Repository-Werkzeuge, kontinuierliche Integration, Umgebungen und Infrastruktur als Code einrichten.
+- Eine minimale Plattform mit Zustandsprüfungen, strukturierter Protokollierung, Metriken und Geheimnisverwaltung bereitstellen.
+- Verwaltete OIDC-Authentifizierung integrieren und interne Nutzer mit UUID anlegen.
+- Zugriffsumfänge und Zugangsberechtigungen implementieren.
+- Die erste Sicherheitsgrenze für den Admin-Bereich sowie Rollen, MFA-Richtlinie und Prüfereignisse einführen.
 
-Exit criterion: a learner and administrator can authenticate in a non-production environment, and protected access is enforced server-side.
+Abschlusskriterium: Lernende und Administratoren können sich in einer Nicht-Produktionsumgebung authentifizieren, und geschützte Zugriffe werden serverseitig durchgesetzt.
 
-## Phase 2: Learning and access MVP
+## Phase 2: MVP für Lernen und Zugang
 
-- Implement courses/topics, versioned questions, server-side grading, sessions, deliveries, attempts, and progress.
-- Build the mobile-first learning flow and basic accessibility behavior.
-- Implement print-code batches and atomic redemption.
-- Add online-purchase webhook integration if it is in MVP scope.
-- Deliver admin user search, access inspection, grant, extension, and revocation.
+- Kurse und Themen, versionierte Fragen, serverseitige Bewertung, Sitzungen, Fragenauslieferungen, Antwortversuche und Fortschritt implementieren.
+- Den für Mobilgeräte optimierten Lernablauf und grundlegende Barrierefreiheit umsetzen.
+- Chargen für Printcodes und deren atomare Einlösung implementieren.
+- Eine Webhook-Integration für Online-Käufe ergänzen, sofern diese zum MVP-Umfang gehört.
+- Im Admin-Bereich Nutzersuche, Einsicht in Zugänge sowie Vergabe, Verlängerung und Widerruf von Zugangsberechtigungen bereitstellen.
 
-Exit criterion: an entitled learner can complete a representative learning session and an administrator can support the account safely.
+Abschlusskriterium: Ein berechtigter Lernender kann eine repräsentative Lernsitzung abschließen, und ein Administrator kann das Konto sicher betreuen.
 
-## Phase 3: Content administration and Moodle migration
+## Phase 3: Inhaltsadministration und Moodle-Migration
 
-- Complete the supported Moodle parser and deterministic normalizer.
-- Extract, validate, and store images and formula sources.
-- Add import runs, diagnostics, idempotency, conflict detection, and replay.
-- Deliver admin import preview, question revision history, editing, approval, and publishing.
-- Run migration rehearsals and reconcile counts, renders, and scoring outcomes.
+- Den Moodle-Parser für die unterstützten Inhalte und die deterministische Normalisierung fertigstellen.
+- Bilder und Formelquellen extrahieren, validieren und speichern.
+- Importläufe, Diagnosen, Idempotenz, Konflikterkennung und erneute Verarbeitung ergänzen.
+- Im Admin-Bereich Importvorschau, Versionshistorie der Fragen, Bearbeitung, Freigabe und Veröffentlichung bereitstellen.
+- Probemigrationen durchführen und Anzahl, Darstellung sowie Bewertungsergebnisse abgleichen.
 
-Exit criterion: approved content can be migrated repeatedly without duplication or silent scoring changes.
+Abschlusskriterium: Freigegebene Inhalte können wiederholt migriert werden, ohne Duplikate oder unbemerkte Änderungen an der Bewertung zu verursachen.
 
-## Phase 4: Production readiness and cutover
+## Phase 4: Produktionsreife und Umstellung
 
-- Run security, accessibility, performance, and failure-recovery tests.
-- Load-test the agreed examination peak and configure scheduled/autoscaling capacity.
-- Validate backups through restoration and test monitoring/incident response.
-- Complete privacy workflows for export, deletion, and retention.
-- Pilot with selected users, resolve migration discrepancies, and rehearse rollback.
-- Freeze Moodle content, run the final migration, reconcile, and cut over.
+- Sicherheits-, Barrierefreiheits-, Leistungs- und Wiederherstellungstests durchführen.
+- Die abgestimmte Prüfungsspitze einem Lasttest unterziehen und zeitgesteuerte beziehungsweise automatisch skalierende Kapazitäten konfigurieren.
+- Backups durch Wiederherstellung validieren und Monitoring sowie Reaktion auf Störungen testen.
+- Datenschutzprozesse für Export, Löschung und Aufbewahrung vervollständigen.
+- Einen Pilotbetrieb mit ausgewählten Nutzern durchführen, Migrationsabweichungen beheben und die Rückkehr zur vorherigen Version proben.
+- Moodle-Inhalte einfrieren, die finale Migration durchführen, Ergebnisse abgleichen und die Plattform umstellen.
 
-Exit criterion: operational, migration, and product owners approve go-live and rollback readiness.
+Abschlusskriterium: Die Verantwortlichen für Betrieb, Migration und Produkt geben den Produktivstart sowie die Bereitschaft zur Rückkehr auf die vorherige Version frei.
 
-## Later increments
+## Spätere Ausbaustufen
 
-- AI tutor grounded in approved content.
-- Paid AI feature grants, usage limits, and separate conversation retention.
-- Rule-based adaptive learning followed by measured model experiments.
-- Data warehouse, additional services, or native apps only when product or operational evidence justifies them.
+- KI-Tutor auf Basis freigegebener Inhalte.
+- Kostenpflichtige Berechtigungen für KI-Funktionen, Nutzungsgrenzen und separate Aufbewahrung von Unterhaltungen.
+- Regelbasiertes adaptives Lernen mit anschließenden, messbaren Modellversuchen.
+- Datenlager, zusätzliche Dienste oder native Apps nur dann, wenn Produkt- oder Betriebsdaten sie rechtfertigen.
 
-## First slide deliverable
+## Erstes Präsentationsergebnis
 
-Recommended three-slide structure:
+Empfohlene Struktur mit drei Folien:
 
-1. Target architecture, technology choices, and modular-monolith decision.
-2. Data model, Moodle import, admin scope, security, and scaling.
-3. Implementation phases, key risks, open decisions, and immediate next steps.
+1. Zielarchitektur, Technologieentscheidungen und Entscheidung für einen modularen Monolithen.
+2. Datenmodell, Moodle-Import, Admin-Umfang, Sicherheit und Skalierung.
+3. Umsetzungsphasen, zentrale Risiken, offene Entscheidungen und unmittelbare nächste Schritte.

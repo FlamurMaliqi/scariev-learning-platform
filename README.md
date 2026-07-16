@@ -1,57 +1,57 @@
-# Scariev Learning Platform
+# Scariev Lernplattform
 
-Architecture and delivery workspace for replacing the existing Moodle-based medical exam preparation platform.
+Arbeitsbereich für Architektur und Umsetzung zur Ablösung der bestehenden Moodle-basierten Plattform für die medizinische Prüfungsvorbereitung.
 
-## Current status
+## Aktueller Stand
 
-The project is in architecture discovery. No production application has been scaffolded yet. The first deliverable is a concise 1–3 slide architecture proposal and initial implementation plan.
+Das Projekt befindet sich in der Architekturkonzeption. Eine produktionsfähige Anwendung wurde noch nicht aufgesetzt. Das erste Ergebnis ist ein kompakter Architekturvorschlag mit 1–3 Folien sowie ein erster Umsetzungsplan.
 
-## First deliverable
+## Erstes Ergebnis
 
-The proposal covers:
+Der Vorschlag umfasst:
 
-- target architecture and technology recommendation;
-- core data model;
-- Moodle import for questions, formulas, and images;
-- learner and admin capabilities;
-- identity, time-limited access, and print-code redemption;
-- security, privacy, monitoring, and scaling;
-- implementation phases and major open decisions.
+- Zielarchitektur und Technologieempfehlung;
+- zentrales Datenmodell;
+- Moodle-Import für Fragen, Formeln und Bilder;
+- Funktionen für Lernende und Administration;
+- Identitätsverwaltung, zeitlich begrenzte Zugänge und Einlösung von Printcodes;
+- Sicherheit, Datenschutz, Monitoring und Skalierung;
+- Umsetzungsphasen und wesentliche offene Entscheidungen.
 
-## Architecture snapshot
+## Architekturüberblick
 
-The current recommendation is a modular monolith:
+Die aktuelle Empfehlung ist ein modularer Monolith:
 
-- Next.js, React, and TypeScript for the mobile-first learner experience and admin portal;
-- a versioned HTTP API in the same deployable application;
-- managed OIDC authentication with an internal UUID-based user model;
-- PostgreSQL as the system of record;
-- object storage and CDN for images and source imports;
-- a background worker from the same codebase for imports and other long-running jobs;
-- an AWS reference deployment using CloudFront/WAF, ECS Fargate, RDS PostgreSQL, S3, SQS, and CloudWatch;
-- future AI functions behind a controlled gateway and the existing access-grant model.
+- Next.js, React und TypeScript für die für Mobilgeräte optimierte Lernoberfläche und das Admin-Portal;
+- eine versionierte HTTP-API innerhalb derselben auslieferbaren Anwendung;
+- verwaltete OIDC-Authentifizierung mit einem internen UUID-basierten Nutzermodell;
+- PostgreSQL als führendes Datensystem;
+- Objektspeicher und CDN für Bilder und Quelldateien von Importen;
+- ein Hintergrundprozess aus derselben Codebasis für Importe und andere länger laufende Aufgaben;
+- eine AWS-Referenzbereitstellung mit CloudFront/WAF, ECS Fargate, RDS PostgreSQL, S3, SQS und CloudWatch;
+- zukünftige KI-Funktionen hinter einer kontrollierten Schnittstelle und dem bestehenden Zugangsberechtigungsmodell.
 
-See [Target Architecture](docs/architecture.md), [Implementation Plan](docs/implementation-plan.md), and [ADR 0001](docs/decisions/0001-modular-monolith.md).
+Siehe [Zielarchitektur](docs/architecture.md), [Umsetzungsplan](docs/implementation-plan.md) und [ADR 0001](docs/decisions/0001-modular-monolith.md).
 
-## Planned application structure
+## Geplante Anwendungsstruktur
 
-Application directories will be added after the architecture spike confirms the Moodle format, hosting constraints, and framework choice.
+Die Anwendungsverzeichnisse werden ergänzt, sobald die technische Voruntersuchung das Moodle-Format, die Betriebsvorgaben und die Framework-Auswahl bestätigt hat.
 
 ```text
 apps/
-  platform/             learner and admin web application plus API
+  platform/             Webanwendung für Lernende und Administration einschließlich API
 packages/
-  database/             schema, migrations, and database access
-  moodle-import/        parser, normalizer, validation, and import reporting
-infrastructure/         deployment and infrastructure as code
-docs/                   architecture, decisions, and delivery plan
+  database/             Schema, Migrationen und Datenbankzugriff
+  moodle-import/        Parser, Normalisierung, Validierung und Importberichte
+infrastructure/         Bereitstellung und Infrastruktur als Code
+docs/                   Architektur, Entscheidungen und Umsetzungsplan
 ```
 
-## Decisions still needed
+## Noch ausstehende Entscheidungen
 
-1. Whether AWS in an EU region is acceptable.
-2. Whether the migration includes Moodle users, access periods, and progress or only content.
-3. A representative Moodle export and inventory of question types/plugins.
-4. Whether product access starts at purchase, code redemption, or first use.
-5. Whether products unlock a fixed exam edition or always-current content.
-6. The expected peak number of concurrent learners.
+1. Ob AWS in einer EU-Region akzeptabel ist.
+2. Ob die Migration neben Inhalten auch Moodle-Nutzer, Zugangszeiträume und Lernfortschritte umfasst.
+3. Ein repräsentativer Moodle-Export sowie eine Übersicht der Fragetypen und Plugins.
+4. Ob der Produktzugang mit dem Kauf, der Codeeinlösung oder der ersten Nutzung beginnt.
+5. Ob Produkte eine feste Prüfungsedition oder stets die aktuellen Inhalte freischalten.
+6. Die erwartete maximale Anzahl gleichzeitig aktiver Lernender.

@@ -1,45 +1,45 @@
-# ADR 0001: Start with a Modular Monolith
+# ADR 0001: Start als modularer Monolith
 
-Status: Proposed
+Status: Vorgeschlagen
 
-Date: 2026-07-16
+Datum: 2026-07-16
 
-## Context
+## Kontext
 
-The platform must replace Moodle, support a mobile-first learner experience and an admin portal, migrate complex content, retain learning history, and scale from a few thousand users toward 10,000 with examination peaks.
+Die Plattform muss Moodle ersetzen, ein für Mobilgeräte optimiertes Lernerlebnis und ein Admin-Portal bieten, komplexe Inhalte migrieren, den Lernverlauf bewahren und von einigen Tausend Nutzern bis auf 10.000 Nutzer einschließlich Prüfungsspitzen skalieren.
 
-The main early risks are content migration, scoring fidelity, product access rules, security, and user experience. They are not independent-service throughput or organization-scale deployment ownership.
+Die wesentlichen anfänglichen Risiken liegen in der Migration von Inhalten, der korrekten Bewertung, den Regeln für Produktzugänge, der Sicherheit und dem Nutzererlebnis. Der Durchsatz unabhängiger Dienste oder eine organisationsweite Verantwortung für Bereitstellungen gehören dagegen nicht zu den frühen Risiken.
 
-## Decision
+## Entscheidung
 
-Build the learner UI, admin UI, versioned API, and domain modules in one deployable application backed by PostgreSQL. Run long-lived web traffic and background work as separate process types from the same codebase and container image.
+Lernenden- und Admin-Oberfläche, versionierte API und Domänenmodule werden als eine bereitstellbare Anwendung mit PostgreSQL als Datenbank umgesetzt. Webanfragen und Hintergrundarbeiten werden als getrennte Prozesstypen aus derselben Codebasis und demselben Container-Abbild ausgeführt.
 
-Keep explicit module boundaries for identity, access, content, learning, admin, import, operations, and future AI integration. Enforce boundaries through code ownership and public module APIs rather than network calls.
+Für Identität, Zugriff, Inhalte, Lernen, Administration, Import, Betrieb und die zukünftige KI-Integration werden klare Modulgrenzen beibehalten. Diese Grenzen werden durch Codeverantwortung und öffentliche Modul-APIs statt durch Netzwerkaufrufe durchgesetzt.
 
-## Consequences
+## Konsequenzen
 
-Positive:
+Vorteile:
 
-- one codebase, deployment pipeline, and transactional data model;
-- simpler development, testing, incident response, and local setup;
-- atomic access redemption, answer submission, and publishing workflows;
-- enough horizontal scaling for the expected user population;
-- modules can be extracted later without designing speculative services now.
+- eine Codebasis, eine Bereitstellungspipeline und ein transaktionales Datenmodell;
+- einfachere Entwicklung, Tests, Störungsbehebung und lokale Einrichtung;
+- atomare Abläufe für Zugangseinlösung, Antwortabgabe und Veröffentlichung;
+- ausreichende horizontale Skalierbarkeit für die erwartete Nutzerzahl;
+- Module können später herausgelöst werden, ohne bereits jetzt spekulative Dienste entwerfen zu müssen.
 
-Trade-offs:
+Abwägungen:
 
-- a defect or deployment can affect multiple modules;
-- module boundaries require discipline because the database is shared;
-- web and worker processes share a release cadence initially.
+- Ein Fehler oder eine Bereitstellung kann mehrere Module betreffen;
+- Modulgrenzen erfordern Disziplin, da die Datenbank gemeinsam genutzt wird;
+- Web- und Hintergrundprozesse folgen zunächst demselben Veröffentlichungszyklus.
 
-## Revisit when
+## Erneute Prüfung
 
-Extract a module only when at least one measurable condition exists:
+Ein Modul wird nur dann herausgelöst, wenn mindestens eine messbare Bedingung erfüllt ist:
 
-- it requires materially different scaling or availability;
-- a separate team owns and releases it independently;
-- its security or data-residency boundary cannot be enforced in the application;
-- background workload harms learner-request latency despite process isolation;
-- measured database or deployment coupling becomes a material constraint.
+- Es erfordert eine wesentlich andere Skalierung oder Verfügbarkeit;
+- ein separates Team verantwortet und veröffentlicht es unabhängig;
+- seine Sicherheits- oder Datenresidenzgrenze kann in der Anwendung nicht durchgesetzt werden;
+- die Hintergrundlast beeinträchtigt trotz Prozesstrennung die Latenz der Anfragen von Lernenden;
+- eine gemessene Kopplung von Datenbank oder Bereitstellung wird zu einer wesentlichen Einschränkung.
 
-Until then, Kubernetes, Kafka, a service mesh, and per-module databases are out of scope.
+Bis dahin sind Kubernetes, Kafka, ein Dienstnetz und separate Datenbanken pro Modul nicht Bestandteil des Umfangs.
